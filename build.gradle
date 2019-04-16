@@ -1,0 +1,139 @@
+buildscript {
+    repositories {
+        maven {
+            name = 'gradle-plugins'
+            url = 'https://plugins.gradle.org/m2'
+        }
+        maven {
+            name = 'sponge'
+            url = 'https://repo.spongepowered.org/maven'
+        }
+        maven {
+            name = 'forge'
+            url = 'http://files.minecraftforge.net/maven'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.spongepowered.mixin'
+
+ext {
+    mcVersion = "1.12.2"
+    forgeBuild = "2835"
+    forgeVersion = "1.12.2-14.23.5." + forgeBuild
+    sekkaVersion = "0.0.1"
+}
+
+version = mcVersion + "-" + forgeBuild + "-" + sekkaVersion
+group = "org.sekka.sekkaforge"
+archivesBaseName = "SekkaForge"
+
+sourceCompatibility = targetCompatibility = 1.8
+
+minecraft {
+    version = project.forgeVersion
+    runDir = "build/run"
+    mappings = "snapshot_20180814"
+}
+
+repositories {
+    jcenter()
+    maven {
+        url = 'https://oss.jfrog.org/artifactory/oss-release-local/'
+    }
+    maven {
+        url = 'https://oss.jfrog.org/artifactory/oss-snapshot-local/'
+    }
+    maven {
+        name = 'gradle-plugins'
+        url = 'https://plugins.gradle.org/m2'
+    }
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'sponge'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+    maven {
+        name = 'forge'
+        url = 'http://files.minecraftforge.net/maven'
+    }
+}
+
+dependencies {
+    compile 'org.soraworld:hocon:1.2.1-SNAPSHOT'
+    compileOnly 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
+    //compileOnly 'org.spongepowered:spongeapi:7.1.0-SNAPSHOT'
+    //compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+sourceSets {
+    main {
+        ext.refMap = "mixins.sekkaforge.refmap.json"
+    }
+}
+
+/*
+def serverRefMap = "${tasks.compileJava.temporaryDir}" + File.separator + "mixins.sekkaforge.refmap.json"
+def mixinSrg = "${tasks.reobfJar.temporaryDir}" + File.separator + "mixins.srg"
+
+compileJava {
+    //options.compilerArgs += ["-Atokens=FORGE=$forgeBuild;FML=$forgeBuild"]
+    options.compilerArgs += ["-AreobfSrgFile=${tasks.reobfJar.primarySrg}", "-AoutSrgFile=${mixinSrg}", "-AoutRefMapFile=${serverRefMap}"]
+}
+*/
+
+/*
+reobfJar {
+    addExtraSrgFile mixinSrg
+    reobfJar(jar) { spec ->
+        spec.classpath = sourceSets.main.compileClasspath
+    }
+}
+*/
+
+jar {
+    exclude 'log4j2.xml'
+    manifest {
+        attributes(
+                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+                'MixinConfigs': 'mixins.sekkaforge.json',
+                "FMLCorePluginContainsFMLMod": "true",
+                "ForceLoadAsMod": "true",
+                "MixinCompatibilityLevel": "JAVA_8",
+                'TargetForgeBuild': forgeBuild,
+                'TargetForgeVersion': forgeVersion,
+                'TweakOrder': 0
+        )
+    }
+}
