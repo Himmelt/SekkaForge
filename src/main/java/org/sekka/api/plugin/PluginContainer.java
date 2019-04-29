@@ -1,7 +1,7 @@
 package org.sekka.api.plugin;
 
 import net.minecraftforge.fml.common.ModContainer;
-import org.spongepowered.api.asset.Asset;
+import org.sekka.api.assets.Asset;
 
 import java.nio.file.Path;
 import java.util.Collections;

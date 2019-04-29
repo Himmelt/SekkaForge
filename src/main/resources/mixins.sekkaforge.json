@@ -12,6 +12,7 @@
     "event.block.MixinBlockEvent",
     "event.entity.MixinEntityEvent",
     "event.entity.player.MixinPlayerEvent",
+    "fml.MixinModContainerFactory",
     "server.MixinMinecraftServer",
     "world.MixinWorld"
   ]
