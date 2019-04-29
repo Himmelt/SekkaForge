@@ -24,6 +24,7 @@ public abstract class MixinWorld implements World {
     @Shadow
     public abstract IBlockState getBlockState(BlockPos pos);
 
+    // TODO set after construction
     private int dimension;
     private UUID uniqueId;
 

@@ -1,31 +1,18 @@
 package org.sekka.api.util;
 
 import org.jetbrains.annotations.NotNull;
-import org.sekka.api.Sekka;
 import org.sekka.api.block.BlockType;
 import org.sekka.api.util.math.MathUtil;
 import org.sekka.api.util.math.Vec3d;
 import org.sekka.api.world.Chunk;
 import org.sekka.api.world.World;
-import org.soraworld.hocon.node.Setting;
 
-import java.io.Serializable;
-import java.util.UUID;
+public class Location implements Cloneable {
 
-public class Location implements Serializable, Cloneable {
-
-    @Setting(path = "world.name")
-    private String worldName;
-    @Setting(path = "world.uuid")
-    private UUID worldId;
-    @Setting
     private double x, y, z;
-    @Setting
     private float yaw, pitch;
+    @NotNull
     private World world;
-
-    private Location() {
-    }
 
     public Location(@NotNull World world, double x, double y, double z) {
         this(world, x, y, z, 0, 0);
@@ -38,67 +25,19 @@ public class Location implements Serializable, Cloneable {
         this.yaw = yaw;
         this.pitch = pitch;
         this.world = world;
-        this.worldId = world.getUUID();
-        this.worldName = world.getName();
     }
 
-    public Location(UUID worldId, double x, double y, double z) {
-        this(worldId, x, y, z, 0, 0);
-    }
-
-    public Location(UUID worldId, double x, double y, double z, float yaw, float pitch) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.worldId = worldId;
-        getWorld();
-    }
-
-    public Location(String worldName, double x, double y, double z) {
-        this(worldName, x, y, z, 0, 0);
-    }
-
-    public Location(String worldName, double x, double y, double z, float yaw, float pitch) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.worldName = worldName;
-        getWorld();
-    }
-
-    private Location(UUID worldId, String worldName, double x, double y, double z, float pitch, float yaw) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.worldId = worldId;
-        this.worldName = worldName;
-        getWorld();
-    }
-
+    @NotNull
     public World getWorld() {
-        if (world == null) {
-            world = Sekka.getWorld(worldId);
-            if (world == null) world = Sekka.getWorld(worldName);
-            if (world != null) {
-                worldId = world.getUUID();
-                worldName = world.getName();
-            }
-        }
         return world;
     }
 
     public Chunk getChunk() {
-        return getWorld().getChunkAt(this);
+        return world.getChunkAt(this);
     }
 
     public BlockType getBlockType() {
-        return getWorld().getBlockAt(this);
+        return world.getBlockAt(this);
     }
 
     public void setX(double x) {
@@ -153,14 +92,6 @@ public class Location implements Serializable, Cloneable {
         return pitch;
     }
 
-    public boolean isValid() {
-        return world != null || worldId != null || (worldName != null && !worldName.isEmpty());
-    }
-
-    public UUID getWorldUUID() {
-        return worldId;
-    }
-
     public Location add(Vec3d vec) {
         this.x += vec.getX();
         this.y += vec.getY();
@@ -204,13 +135,11 @@ public class Location implements Serializable, Cloneable {
     public double distanceSquared(Location to) {
         if (to == null) {
             throw new IllegalArgumentException("Cannot measure distance to a null location");
-        } else if (to.getWorld() == null || getWorld() == null) {
-            throw new IllegalArgumentException("Cannot measure distance to a null world");
-        } else if (to.getWorld() != getWorld()) {
-            throw new IllegalArgumentException("Cannot measure distance between " + getWorld().getName() + " and " + to.getWorld().getName());
+        } else if (to.world != world) {
+            throw new IllegalArgumentException("Cannot measure distance between " + world.getName() + " and " + to.world.getName());
         }
 
-        return (x - to.getX()) * (x - to.getX()) + (y - to.getY()) * (y - to.getY()) + (z - to.getZ()) * (z - to.getZ());
+        return (x - to.x) * (x - to.y) + (y - to.y) * (y - to.y) + (z - to.z) * (z - to.z);
     }
 
     public Location multiply(double m) {
@@ -232,7 +161,7 @@ public class Location implements Serializable, Cloneable {
         if (other == null) return false;
         if (!(other instanceof Location)) return false;
         Location another = (Location) other;
-        if (worldId != another.getWorldUUID() && (worldId == null || !worldId.equals(another.getWorldUUID()))) return false;
+        if (world != another.world) return false;
         // TODO == 和 doubleToLongBits 区别
         if (Double.doubleToLongBits(x) != Double.doubleToLongBits(another.getX())) return false;
         if (Double.doubleToLongBits(y) != Double.doubleToLongBits(another.getY())) return false;
@@ -244,7 +173,7 @@ public class Location implements Serializable, Cloneable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 19 * hash + (worldId != null ? worldId.hashCode() : 0);
+        hash = 19 * hash + (world.hashCode());
         hash = 19 * hash + (int) (Double.doubleToLongBits(x) ^ (Double.doubleToLongBits(x) >>> 32));
         hash = 19 * hash + (int) (Double.doubleToLongBits(y) ^ (Double.doubleToLongBits(y) >>> 32));
         hash = 19 * hash + (int) (Double.doubleToLongBits(z) ^ (Double.doubleToLongBits(z) >>> 32));
@@ -255,7 +184,7 @@ public class Location implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "Location{" + "world=" + worldName + ",x=" + x + ",y=" + y + ",z=" + z + ",pitch=" + pitch + ",yaw=" + yaw + '}';
+        return "Location{" + "world=" + world.getName() + ",x=" + x + ",y=" + y + ",z=" + z + ",pitch=" + pitch + ",yaw=" + yaw + '}';
     }
 
     public Vec3d getVec3d() {
@@ -272,8 +201,6 @@ public class Location implements Serializable, Cloneable {
             location.pitch = pitch;
             location.yaw = yaw;
             location.world = world;
-            location.worldId = worldId;
-            location.worldName = worldName;
             return location;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
