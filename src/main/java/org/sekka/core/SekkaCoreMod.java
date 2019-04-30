@@ -24,10 +24,11 @@ public class SekkaCoreMod implements IFMLLoadingPlugin {
 
     public SekkaCoreMod() {
         System.out.println("<init> SekkaCoreMod");
-        Launch.classLoader.addClassLoaderExclusion("org.slf4j.");
         initPaths((File) FMLInjectionData.data()[6]); // 6 = game dir
-        setupMixinEnvironment();
+        MixinBootstrap.init();
+        Mixins.addConfiguration("mixins.sekka.core.json");
         Mixins.addConfiguration("mixins.sekka.preinit.json");
+        Launch.classLoader.addClassLoaderExclusion("org.slf4j.");
         Launch.classLoader.addClassLoaderExclusion("org.sekka.api.event.Event");
         Launch.classLoader.addClassLoaderExclusion("org.sekka.api.event.Cancelable");
     }
@@ -52,7 +53,7 @@ public class SekkaCoreMod implements IFMLLoadingPlugin {
     }
 
     public String getAccessTransformerClass() {
-        return "org.sekka.core.asm.SekkaAccessTransformer";
+        return null;
     }
 
     private static void initPaths(File gameDirIn) {
@@ -60,10 +61,5 @@ public class SekkaCoreMod implements IFMLLoadingPlugin {
         pluginsDir = gameDir.resolve("mods");
         configDir = gameDir.resolve("config");
         sekkaConfigDir = configDir.resolve(Sekka.MOD_ID);
-    }
-
-    private static void setupMixinEnvironment() {
-        MixinBootstrap.init();
-        Mixins.addConfiguration("mixins.sekka.core.json");
     }
 }

@@ -9,6 +9,7 @@
   "mixins": [
     "block.MixinBlock",
     "entity.MixinEntity",
+    "entity.player.MixinEntityPlayer",
     "event.block.MixinBlockEvent",
     "event.entity.MixinEntityEvent",
     "event.entity.player.MixinPlayerEvent",

@@ -1,6 +1,7 @@
 package org.sekka.mixin.entity;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import org.sekka.api.block.Block;
 import org.sekka.api.entity.Entity;
 import org.sekka.api.entity.EntityType;
@@ -73,6 +74,8 @@ public abstract class MixinEntity implements Entity {
 
     @Shadow
     public double motionZ;
+
+    @Shadow public abstract void sendMessage(ITextComponent message);
 
     public Location getLocation() {
         return new Location((World) world, posX, posY, posZ);
@@ -151,7 +154,6 @@ public abstract class MixinEntity implements Entity {
     }
 
     public void remove() {
-
     }
 
     public boolean isDead() {
