@@ -1,8 +1,9 @@
-.idea
-.gradle
-build
-out
-tmp
+/.idea
+/.gradle
+/build
+/out
+/lib
+/tmp
 *.iml
 *.ipr
 *.iws
