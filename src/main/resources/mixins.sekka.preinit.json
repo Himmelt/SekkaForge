@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.7.11",
+  "package": "org.sekka.mixin",
+  "refmap": "mixins.sekka.refmap.json",
+  "target": "@env(PREINIT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "fml.MixinEvent"
+  ]
+}

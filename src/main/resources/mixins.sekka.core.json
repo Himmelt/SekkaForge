@@ -2,17 +2,16 @@
   "required": true,
   "minVersion": "0.7.11",
   "package": "org.sekka.mixin",
-  "refmap": "mixins.sekkaforge.refmap.json",
+  "refmap": "mixins.sekka.refmap.json",
+  "priority": 1111,
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "block.MixinBlock",
     "entity.MixinEntity",
-    "event.MixinEvent",
     "event.block.MixinBlockEvent",
     "event.entity.MixinEntityEvent",
     "event.entity.player.MixinPlayerEvent",
-    "fml.MixinModContainerFactory",
     "server.MixinMinecraftServer",
     "world.MixinWorld"
   ]

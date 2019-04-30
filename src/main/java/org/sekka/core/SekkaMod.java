@@ -1,0 +1,39 @@
+package org.sekka.core;
+
+import net.minecraftforge.fml.common.DummyModContainer;
+import net.minecraftforge.fml.common.ModContainerFactory;
+import net.minecraftforge.fml.common.ModMetadata;
+import org.objectweb.asm.Type;
+import org.sekka.api.Sekka;
+import org.sekka.api.plugin.Plugin;
+import org.sekka.core.plugin.SekkaPluginContainer;
+
+import java.io.File;
+import java.util.Arrays;
+
+public class SekkaMod extends DummyModContainer {
+
+    private File modFile;
+
+    public SekkaMod() {
+        super(new ModMetadata());
+        ModMetadata meta = getMetadata();
+        meta.modId = Sekka.MOD_ID;
+        meta.name = Sekka.MOD_NAME;
+        meta.version = Sekka.MOD_VERSION;
+        meta.credits = "Made possible with help from many people";
+        meta.authorList = Arrays.asList("Himmelt");
+        meta.description = "Sekka Plugin Mod.";
+        meta.url = "http://github.com/Himmelt/Sekka";
+        meta.screenshots = new String[0];
+        meta.logoFile = "/sekka_logo.png";
+
+        System.out.println("<init> SekkaMod");
+        ModContainerFactory.instance().registerContainerType(Type.getType(Plugin.class), SekkaPluginContainer.class);
+        this.modFile = SekkaCoreMod.modFile;
+    }
+
+    public File getSource() {
+        return modFile;
+    }
+}

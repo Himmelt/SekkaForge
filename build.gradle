@@ -31,8 +31,8 @@ ext {
 }
 
 version = mcVersion + "-" + forgeBuild + "-" + sekkaVersion
-group = "org.sekka.sekkaforge"
-archivesBaseName = "SekkaForge"
+group = "org.sekka"
+archivesBaseName = "Sekka"
 
 sourceCompatibility = targetCompatibility = 1.8
 
@@ -40,6 +40,7 @@ minecraft {
     version = project.forgeVersion
     runDir = "build/run"
     mappings = "snapshot_20180814"
+    coreMod = "org.sekka.core.SekkaCoreMod"
 }
 
 repositories {
@@ -72,9 +73,14 @@ repositories {
     }
 }
 
+configurations {
+    shadow
+    compile.extendsFrom(shadow)
+}
+
 dependencies {
-    compile 'org.soraworld:hocon:1.2.1-SNAPSHOT'
-    compileOnly 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
+    shadow 'org.soraworld:hocon:1.2.1-SNAPSHOT'
+    shadow 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
 /*    compileOnly('org.spongepowered:spongeapi:7.1.0-SNAPSHOT') {
         transitive = false
     }
@@ -103,21 +109,22 @@ processResources {
 
 sourceSets {
     main {
-        ext.refMap = "mixins.sekkaforge.refmap.json"
+        ext.refMap = "mixins.sekka.refmap.json"
     }
 }
 
 jar {
-    exclude 'log4j2.xml'
+    configurations.shadow.copyRecursive().setTransitive(false).each {
+        artifact -> from(zipTree(artifact))
+    }
+    includeEmptyDirs = false
+    exclude 'log4j2.xml', 'META-INF/MUMFREY.RSA', 'LICENSE.txt'
     manifest {
         attributes(
-                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-                'MixinConfigs': 'mixins.sekkaforge.json',
-                "FMLCorePluginContainsFMLMod": "true",
-                "ForceLoadAsMod": "true",
-                "MixinCompatibilityLevel": "JAVA_8",
                 'TargetForgeBuild': forgeBuild,
                 'TargetForgeVersion': forgeVersion,
+                'FMLCorePlugin': 'org.sekka.core.SekkaCoreMod',
+                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
                 'TweakOrder': 0
         )
     }

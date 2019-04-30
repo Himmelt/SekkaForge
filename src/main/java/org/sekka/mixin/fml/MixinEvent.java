@@ -1,4 +1,4 @@
-package org.sekka.mixin.event;
+package org.sekka.mixin.fml;
 
 import org.sekka.api.event.Event;
 import org.spongepowered.asm.mixin.Mixin;
