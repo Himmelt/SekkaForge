@@ -6,9 +6,11 @@ import net.minecraftforge.fml.common.ModMetadata;
 import org.objectweb.asm.Type;
 import org.sekka.api.Sekka;
 import org.sekka.api.plugin.Plugin;
+import org.sekka.core.event.SekkaEventManager;
 import org.sekka.core.plugin.SekkaPluginContainer;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 public class SekkaMod extends DummyModContainer {
@@ -31,6 +33,17 @@ public class SekkaMod extends DummyModContainer {
         System.out.println("<init> SekkaMod");
         ModContainerFactory.instance().registerContainerType(Type.getType(Plugin.class), SekkaPluginContainer.class);
         this.modFile = SekkaCoreMod.modFile;
+        init();
+    }
+
+    private void init() {
+        try {
+            Field eventManager = Sekka.class.getDeclaredField("eventManager");
+            eventManager.setAccessible(true);
+            eventManager.set(null, new SekkaEventManager());
+        } catch (Throwable e) {
+            System.out.println("CAN NOT construct eventManager field in Sekka.class !");
+        }
     }
 
     public File getSource() {
