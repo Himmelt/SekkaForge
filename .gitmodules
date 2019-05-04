@@ -1,0 +1,4 @@
+[submodule "SekkaAPI"]
+	path = SekkaAPI
+	url = https://github.com/Himmelt/SekkaAPI.git
+	branch = dev
