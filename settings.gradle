@@ -1,3 +1,4 @@
 rootProject.name = 'SekkaForge'
 
 include 'SekkaAPI'
+include 'SekkaTest'

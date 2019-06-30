@@ -12,6 +12,8 @@
     "entity.player.MixinEntityPlayer",
     "event.block.MixinBlockEvent",
     "event.entity.MixinEntityEvent",
+    "event.entity.MixinLivingEvent",
+    "event.entity.player.MixinFillBucketEvent",
     "event.entity.player.MixinPlayerEvent",
     "server.MixinMinecraftServer",
     "world.MixinWorld"
