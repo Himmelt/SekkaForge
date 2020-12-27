@@ -16,6 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
+/**
+ * @author Himmelt
+ */
 @Mixin(value = ASMEventHandler.class, remap = false)
 public class MixinASMEventHandler {
 
@@ -57,7 +60,9 @@ public class MixinASMEventHandler {
      */
     @Overwrite
     public void invoke(Event event) {
-        if (GETCONTEXT) ThreadContext.put("mod", owner == null ? "" : owner.getName());
+        if (GETCONTEXT) {
+            ThreadContext.put("mod", owner == null ? "" : owner.getName());
+        }
         if (handler != null) {
             if (!event.isCancelable() || !event.isCanceled() || !ignoreCancelled) {
                 if (filter == null || filter == ((IGenericEvent) event).getGenericType()) {
@@ -65,7 +70,9 @@ public class MixinASMEventHandler {
                 }
             }
         }
-        if (GETCONTEXT) ThreadContext.remove("mod");
+        if (GETCONTEXT) {
+            ThreadContext.remove("mod");
+        }
     }
 
     /**
