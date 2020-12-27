@@ -6,11 +6,15 @@ import org.sekka.api.plugin.PluginContainer;
 
 import java.util.Map;
 
+/**
+ * @author Himmelt
+ */
 public class SekkaPluginContainer extends FMLModContainer implements PluginContainer {
     public SekkaPluginContainer(String className, ModCandidate container, Map<String, Object> descriptor) {
         super(className, container, pluginFix(descriptor));
     }
 
+    @Override
     public String getId() {
         return getModId();
     }

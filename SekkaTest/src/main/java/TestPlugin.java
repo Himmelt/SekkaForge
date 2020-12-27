@@ -3,6 +3,9 @@ import org.sekka.api.event.Listener;
 import org.sekka.api.event.entity.player.FillBucketEvent;
 import org.sekka.api.plugin.Plugin;
 
+/**
+ * @author Himmelt
+ */
 @Plugin(
         id = "sekkatest",
         name = "SekkaTest",
@@ -12,7 +15,7 @@ public class TestPlugin {
 
     public TestPlugin() {
         System.out.println("<init> TestPlugin");
-        Sekka.getEventManager().register(this);
+        Sekka.registerListener(this);
     }
 
     @Listener
@@ -20,6 +23,7 @@ public class TestPlugin {
         System.out.println("FillBucketEvent");
         System.out.println(event);
         System.out.println(event.getPlayer());
+        event.getPlayer().sendRawMessage("FillBucketEvent");
         event.setCancelled(true);
     }
 }

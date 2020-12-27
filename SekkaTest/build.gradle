@@ -6,19 +6,8 @@ archivesBaseName = "SekkaTest"
 
 sourceCompatibility = targetCompatibility = 1.8
 
-repositories {
-    jcenter()
-    maven {
-        url = 'https://oss.jfrog.org/artifactory/oss-release-local/'
-    }
-    maven {
-        url = 'https://oss.jfrog.org/artifactory/oss-snapshot-local/'
-    }
-}
-
 dependencies {
-    compile 'org.soraworld:hocon:1.2.1-SNAPSHOT'
-    compile project(':SekkaAPI')
+    compile files('../build/libs/Sekka-1.12.2-2835-0.0.1.jar')
 }
 
 tasks.withType(JavaCompile) {

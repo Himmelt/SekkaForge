@@ -57,6 +57,7 @@ public class MixinASMEventHandler {
 
     /**
      * @author Himmelt
+     * @reason mixin sekka event system
      */
     @Overwrite
     public void invoke(Event event) {
@@ -77,6 +78,7 @@ public class MixinASMEventHandler {
 
     /**
      * @author Himmelt
+     * @reason mixin sekka event system
      */
     @Overwrite
     public EventPriority getPriority() {

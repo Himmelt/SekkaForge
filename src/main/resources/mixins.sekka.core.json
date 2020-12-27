@@ -1,8 +1,8 @@
 {
   "required": true,
-  "minVersion": "0.7.11",
+  "minVersion": "0.8",
   "package": "org.sekka.mixin",
-  "refmap": "mixins.sekka.refmap.json",
+  "refmap": "sekka.refmap.json",
   "priority": 1111,
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",

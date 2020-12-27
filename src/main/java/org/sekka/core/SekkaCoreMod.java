@@ -11,6 +11,9 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Map;
 
+/**
+ * @author Himmelt
+ */
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class SekkaCoreMod implements IFMLLoadingPlugin {
 
@@ -23,6 +26,7 @@ public class SekkaCoreMod implements IFMLLoadingPlugin {
     private static Path pluginConfigDir;
 
     public SekkaCoreMod() {
+        // TODO remove
         System.out.println("<init> SekkaCoreMod");
         initPaths((File) FMLInjectionData.data()[6]); // 6 = game dir
         MixinBootstrap.init();
@@ -33,18 +37,22 @@ public class SekkaCoreMod implements IFMLLoadingPlugin {
         Launch.classLoader.addClassLoaderExclusion("org.sekka.api.event.Cancelable");
     }
 
+    @Override
     public String[] getASMTransformerClass() {
         return new String[0];
     }
 
+    @Override
     public String getModContainerClass() {
         return "org.sekka.core.SekkaMod";
     }
 
+    @Override
     public String getSetupClass() {
         return null;
     }
 
+    @Override
     public void injectData(Map<String, Object> data) {
         modFile = (File) data.get("coremodLocation");
         if (modFile == null) {
@@ -52,6 +60,7 @@ public class SekkaCoreMod implements IFMLLoadingPlugin {
         }
     }
 
+    @Override
     public String getAccessTransformerClass() {
         return null;
     }

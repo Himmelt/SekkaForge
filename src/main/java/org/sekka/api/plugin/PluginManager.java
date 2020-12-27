@@ -3,6 +3,9 @@ package org.sekka.api.plugin;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * @author Himmelt
+ */
 public interface PluginManager {
 
     String MINECRAFT_PLUGIN_ID = "minecraft";

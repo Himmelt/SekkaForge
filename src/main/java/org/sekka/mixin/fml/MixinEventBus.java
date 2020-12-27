@@ -35,10 +35,13 @@ public abstract class MixinEventBus {
 
     /**
      * @author Himmelt
+     * @reason mixin sekka event system
      */
     @Overwrite
     public void register(Object target) {
-        if (listeners.containsKey(target)) return;
+        if (listeners.containsKey(target)) {
+            return;
+        }
 
         ModContainer activeModContainer = Loader.instance().activeModContainer();
         if (activeModContainer == null) {
@@ -50,8 +53,11 @@ public abstract class MixinEventBus {
         @SuppressWarnings("unchecked")
         Set<? extends Class<?>> supers = isStatic ? Sets.newHashSet((Class<?>) target) : TypeToken.of(target.getClass()).getTypes().rawTypes();
         for (Method method : (isStatic ? (Class<?>) target : target.getClass()).getMethods()) {
-            if (isStatic && !Modifier.isStatic(method.getModifiers())) continue;
-            else if (!isStatic && Modifier.isStatic(method.getModifiers())) continue;
+            if (isStatic && !Modifier.isStatic(method.getModifiers())) {
+                continue;
+            } else if (!isStatic && Modifier.isStatic(method.getModifiers())) {
+                continue;
+            }
 
             for (Class<?> cls : supers) {
                 try {

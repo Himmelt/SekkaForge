@@ -2,6 +2,9 @@ package org.sekka.api.entity;
 
 import org.sekka.api.util.Location;
 
+/**
+ * @author Himmelt
+ */
 public interface LivingEntity {
 
     double getEyeHeight();

@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.sekka.api.event.Event;
 import org.sekka.api.event.EventManager;
 
+/**
+ * @author Himmelt
+ */
 public class SekkaEventManager implements EventManager {
 
     public static final ImmutableBiMap<EventPriority, org.sekka.api.event.EventPriority> PRIORITY_MAPPINGS =
@@ -18,14 +21,17 @@ public class SekkaEventManager implements EventManager {
                     .put(EventPriority.LOWEST, org.sekka.api.event.EventPriority.LAST)
                     .build();
 
+    @Override
     public void register(@NotNull Object listener) {
         MinecraftForge.EVENT_BUS.register(listener);
     }
 
+    @Override
     public void unregister(@NotNull Object listener) {
         MinecraftForge.EVENT_BUS.unregister(listener);
     }
 
+    @Override
     public boolean post(@NotNull Event event) {
         return MinecraftForge.EVENT_BUS.post((net.minecraftforge.fml.common.eventhandler.Event) event);
     }

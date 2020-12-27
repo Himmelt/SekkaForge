@@ -6,6 +6,9 @@ import org.sekka.api.util.Location;
 
 import java.net.InetSocketAddress;
 
+/**
+ * @author Himmelt
+ */
 public interface Player extends CommandSender, User {
 
     String getDisplayName();

@@ -12,7 +12,11 @@ import org.sekka.core.plugin.SekkaPluginContainer;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
 
+/**
+ * @author Himmelt
+ */
 public class SekkaMod extends DummyModContainer {
 
     private File modFile;
@@ -24,12 +28,13 @@ public class SekkaMod extends DummyModContainer {
         meta.name = Sekka.MOD_NAME;
         meta.version = Sekka.MOD_VERSION;
         meta.credits = "Made possible with help from many people";
-        meta.authorList = Arrays.asList("Himmelt");
+        meta.authorList = Collections.singletonList("Himmelt");
         meta.description = "Sekka Plugin Mod.";
-        meta.url = "http://github.com/Himmelt/Sekka";
+        meta.url = "http://github.com/Himmelt/SekkaForge";
         meta.screenshots = new String[0];
         meta.logoFile = "/sekka_logo.png";
 
+        // TODO remove
         System.out.println("<init> SekkaMod");
         ModContainerFactory.instance().registerContainerType(Type.getType(Plugin.class), SekkaPluginContainer.class);
         this.modFile = SekkaCoreMod.modFile;
@@ -46,6 +51,7 @@ public class SekkaMod extends DummyModContainer {
         }
     }
 
+    @Override
     public File getSource() {
         return modFile;
     }
